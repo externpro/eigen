@@ -66,7 +66,7 @@ endif()
 
 find_package(Pastix)
 find_package(Scotch)
-find_package(Metis 5.0 REQUIRED)
+find_package(Metis 5.0)
 if(PASTIX_FOUND AND BLAS_FOUND)
   add_definitions("-DEIGEN_PASTIX_SUPPORT")
   include_directories(${PASTIX_INCLUDES})
