@@ -83,7 +83,7 @@ if(CHOLMOD_LIBRARIES)
 endif(CHOLMOD_LIBRARIES)
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(CHOLMOD DEFAULT_MSG
+find_package_handle_standard_args(Cholmod DEFAULT_MSG
                                   CHOLMOD_INCLUDES CHOLMOD_LIBRARIES)
 
 mark_as_advanced(CHOLMOD_INCLUDES CHOLMOD_LIBRARIES AMD_LIBRARY COLAMD_LIBRARY SUITESPARSE_LIBRARY CAMD_LIBRARY CCOLAMD_LIBRARY CHOLMOD_METIS_LIBRARY)

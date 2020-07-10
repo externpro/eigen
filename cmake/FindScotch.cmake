@@ -361,7 +361,7 @@ set(CMAKE_REQUIRED_INCLUDES "")
 # check that SCOTCH has been found
 # ---------------------------------
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(SCOTCH DEFAULT_MSG
+find_package_handle_standard_args(Scotch DEFAULT_MSG
   SCOTCH_LIBRARIES
   SCOTCH_WORKS)
 #
