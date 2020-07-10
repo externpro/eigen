@@ -18,7 +18,7 @@ find_path(SCOTCH_INCLUDES
 find_library(SCOTCH_LIBRARIES scotch PATHS $ENV{SCOTCHDIR} ${LIB_INSTALL_DIR})
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(SCOTCH DEFAULT_MSG
+find_package_handle_standard_args(Scotch DEFAULT_MSG
                                   SCOTCH_INCLUDES SCOTCH_LIBRARIES)
 
 mark_as_advanced(SCOTCH_INCLUDES SCOTCH_LIBRARIES)

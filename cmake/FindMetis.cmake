@@ -53,7 +53,7 @@ endmacro(_metis_check_version)
 find_library(METIS_LIBRARIES metis PATHS $ENV{METISDIR} ${LIB_INSTALL_DIR} PATH_SUFFIXES lib)
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(METIS DEFAULT_MSG
+find_package_handle_standard_args(Metis DEFAULT_MSG
                                   METIS_INCLUDES METIS_LIBRARIES METIS_VERSION_OK)
 
 mark_as_advanced(METIS_INCLUDES METIS_LIBRARIES)

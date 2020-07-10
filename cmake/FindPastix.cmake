@@ -19,7 +19,7 @@ find_library(PASTIX_LIBRARIES pastix PATHS $ENV{PASTIXDIR} ${LIB_INSTALL_DIR})
 
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(PASTIX DEFAULT_MSG
+find_package_handle_standard_args(Pastix DEFAULT_MSG
                                   PASTIX_INCLUDES PASTIX_LIBRARIES)
 
 mark_as_advanced(PASTIX_INCLUDES PASTIX_LIBRARIES)
