@@ -14,7 +14,7 @@ find_path(ADOLC_INCLUDES
 find_library(ADOLC_LIBRARIES adolc PATHS $ENV{ADOLCDIR} ${LIB_INSTALL_DIR})
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(ADOLC DEFAULT_MSG
+find_package_handle_standard_args(Adolc DEFAULT_MSG
                                   ADOLC_INCLUDES ADOLC_LIBRARIES)
 
 mark_as_advanced(ADOLC_INCLUDES ADOLC_LIBRARIES)

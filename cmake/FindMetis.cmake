@@ -256,7 +256,7 @@ mark_as_advanced(METIS_DIR_FOUND)
 # check that METIS has been found
 # ---------------------------------
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(METIS DEFAULT_MSG
+find_package_handle_standard_args(Metis DEFAULT_MSG
   METIS_LIBRARIES
   METIS_WORKS)
 #

@@ -699,6 +699,6 @@ mark_as_advanced(PASTIX_DIR_FOUND)
 # check that PASTIX has been found
 # ---------------------------------
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(PASTIX DEFAULT_MSG
+find_package_handle_standard_args(Pastix DEFAULT_MSG
   PASTIX_LIBRARIES
   PASTIX_WORKS)
