@@ -1,6 +1,5 @@
-project(Eigen3)
-
 cmake_minimum_required(VERSION 2.8.5...3.21)
+project(Eigen3)
 
 # guard against in-source builds
 
