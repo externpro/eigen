@@ -397,8 +397,11 @@ else()
       CACHE PATH "The directory relative to CMAKE_PREFIX_PATH where Eigen header files are installed"
       )
 endif()
+if(NOT DEFINED XP_INSTALL_CMAKEDIR)
+  set(XP_INSTALL_CMAKEDIR "${CMAKE_INSTALL_DATADIR}/eigen3/cmake")
+endif()
 set(CMAKEPACKAGE_INSTALL_DIR
-    "${CMAKE_INSTALL_DATADIR}/eigen3/cmake"
+    "${XP_INSTALL_CMAKEDIR}"
     CACHE PATH "The directory relative to CMAKE_PREFIX_PATH where Eigen3Config.cmake is installed"
     )
 set(PKGCONFIG_INSTALL_DIR
@@ -539,6 +542,7 @@ if (NOT CMAKE_VERSION VERSION_LESS 3.0)
   target_include_directories (eigen INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   )
 
   # Export as title case Eigen
