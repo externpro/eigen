@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.5...3.21)
+cmake_minimum_required(VERSION 2.8.5...3.31)
 project(Eigen3)
 
 # guard against in-source builds
@@ -63,6 +63,7 @@ endif(EIGEN_HG_CHANGESET)
 
 include(CheckCXXCompilerFlag)
 include(GNUInstallDirs)
+include(xpflags)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
