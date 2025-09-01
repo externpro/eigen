@@ -12,7 +12,6 @@ core
 core.*
 *.bak
 *~
-*build*
 *.moc.*
 *.moc
 ui_*
@@ -36,3 +35,8 @@ lapack/reference
 .settings
 Makefile
 !ci/build.gitlab-ci.yml
+
+# externpro
+.env
+_bld*/
+docker-compose.override.yml
