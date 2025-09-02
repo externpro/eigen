@@ -1,0 +1,15 @@
+{
+  "version": 8,
+  "configurePresets": [
+    {
+      "name": "config-base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/_bld-${presetName}",
+      "cacheVariables": {
+        "BUILD_TESTING": "OFF",
+        "EIGEN_BUILD_PKGCONFIG": "OFF",
+        "XP_NAMESPACE": "xpro"
+      }
+    }
+  ]
+}

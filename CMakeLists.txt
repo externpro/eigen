@@ -1,6 +1,7 @@
 # cmake_minimum_require must be the first command of the file
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.5.0...3.31)
 
+set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES .devcontainer/cmake/xproinc.cmake)
 project(Eigen3)
 
 # guard against in-source builds
@@ -58,8 +59,9 @@ endif()
 include(CheckCXXCompilerFlag)
 include(GNUInstallDirs)
 include(CMakeDependentOption)
+include(xpflags)
 
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 
 option(EIGEN_TEST_CXX11 "Enable testing with C++11 and C++11 features (e.g. Tensor module)." OFF)
@@ -420,6 +422,24 @@ set(EIGEN_CUDA_COMPUTE_ARCH 30 CACHE STRING "The CUDA compute architecture level
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
+function(callPackageDevel)
+  set(XP_INSTALL_CMAKEDIR ${CMAKEPACKAGE_INSTALL_DIR})
+  set(CMAKE_PROJECT_NAME eigen)
+  xpPackageDevel(TARGETS_FILE ${targetsFile} LIBRARIES ${INSTALL_NAMESPACE}Eigen)
+endfunction()
+
+set(targetsFile Eigen3Targets)
+if(DEFINED XP_NAMESPACE)
+  set(CMAKEPACKAGE_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/cmake")
+  set(INSTALL_COMPONENT "devel")
+  set(INSTALL_NAMESPACE "${XP_NAMESPACE}::")
+  callPackageDevel()
+  set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME devel)
+else()
+  set(INSTALL_COMPONENT "Devel")
+  set(INSTALL_NAMESPACE "Eigen3::")
+endif()
+
 # Backward compatibility support for EIGEN_INCLUDE_INSTALL_DIR
 if(EIGEN_INCLUDE_INSTALL_DIR)
   message(WARNING "EIGEN_INCLUDE_INSTALL_DIR is deprecated. Use INCLUDE_INSTALL_DIR instead.")
@@ -463,7 +483,7 @@ endmacro()
 
 install(FILES
   signature_of_eigen3_matrix_library
-  DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel
+  DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT ${INSTALL_COMPONENT}
   )
 
 if(EIGEN_BUILD_PKGCONFIG)
@@ -473,7 +493,7 @@ if(EIGEN_BUILD_PKGCONFIG)
         )
 endif()
 
-install(DIRECTORY Eigen DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel)
+install(DIRECTORY Eigen DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT ${INSTALL_COMPONENT})
 
 
 option(EIGEN_BUILD_DOC "Enable creation of Eigen documentation" ON)
@@ -605,12 +625,13 @@ target_compile_definitions (eigen INTERFACE ${EIGEN_DEFINITIONS})
 target_include_directories (eigen INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 # Export as title case Eigen
 set_target_properties (eigen PROPERTIES EXPORT_NAME Eigen)
 
-install (TARGETS eigen EXPORT Eigen3Targets)
+install (TARGETS eigen EXPORT ${targetsFile})
 
 configure_package_config_file (
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Eigen3Config.cmake.in
@@ -632,12 +653,12 @@ set (CMAKE_SIZEOF_VOID_P ${_Eigen3_CMAKE_SIZEOF_VOID_P})
 
 # The Eigen target will be located in the Eigen3 namespace. Other CMake
 # targets can refer to it using Eigen3::Eigen.
-export (TARGETS eigen NAMESPACE Eigen3:: FILE Eigen3Targets.cmake)
+export (TARGETS eigen NAMESPACE ${INSTALL_NAMESPACE} FILE ${targetsFile}.cmake)
 # Export Eigen3 package to CMake registry such that it can be easily found by
 # CMake even if it has not been installed to a standard directory.
 export (PACKAGE Eigen3)
 
-install (EXPORT Eigen3Targets NAMESPACE Eigen3:: DESTINATION ${CMAKEPACKAGE_INSTALL_DIR})
+install (EXPORT ${targetsFile} NAMESPACE ${INSTALL_NAMESPACE} DESTINATION ${CMAKEPACKAGE_INSTALL_DIR})
 
 install ( FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/UseEigen3.cmake
                 ${CMAKE_CURRENT_BINARY_DIR}/Eigen3Config.cmake
