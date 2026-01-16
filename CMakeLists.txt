@@ -421,22 +421,19 @@ set(EIGEN_CUDA_COMPUTE_ARCH 30 CACHE STRING "The CUDA compute architecture level
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-function(callPackageDevel)
-  set(XP_INSTALL_CMAKEDIR ${CMAKEPACKAGE_INSTALL_DIR})
-  set(CMAKE_PROJECT_NAME eigen)
-  xpPackageDevel(TARGETS_FILE ${targetsFile} LIBRARIES ${INSTALL_NAMESPACE}Eigen)
-endfunction()
-
 set(targetsFile Eigen3Targets)
 if(DEFINED XP_NAMESPACE)
-  set(CMAKEPACKAGE_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/cmake")
-  set(INSTALL_COMPONENT "devel")
-  set(INSTALL_NAMESPACE "${XP_NAMESPACE}::")
-  callPackageDevel()
-  set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME devel)
+  xpExternPackage(REPO_NAME eigen NAMESPACE ${XP_NAMESPACE} ALIAS_NAMESPACE Eigen3
+    TARGETS_FILE ${targetsFile} LIBRARIES Eigen
+    BASE ${EIGEN_VERSION_NUMBER} XPDIFF "patch"
+    WEB "http://eigen.tuxfamily.org" UPSTREAM "gitlab.com/libeigen/eigen.git"
+    DESC "C++ template library for linear algebra"
+    LICENSE "[MPL-2.0](http://eigen.tuxfamily.org/index.php?title=Main_Page#License 'Mozilla Public License 2.0')"
+    )
+  set(CMAKEPACKAGE_INSTALL_DIR ${XP_INSTALL_CMAKEDIR})
+  set(CMAKE_NAMESPACE ${XP_NAMESPACE})
 else()
-  set(INSTALL_COMPONENT "Devel")
-  set(INSTALL_NAMESPACE "Eigen3::")
+  set(CMAKE_NAMESPACE Eigen3)
 endif()
 
 # Backward compatibility support for EIGEN_INCLUDE_INSTALL_DIR
@@ -482,7 +479,7 @@ endmacro()
 
 install(FILES
   signature_of_eigen3_matrix_library
-  DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT ${INSTALL_COMPONENT}
+  DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel
   )
 
 if(EIGEN_BUILD_PKGCONFIG)
@@ -492,7 +489,7 @@ if(EIGEN_BUILD_PKGCONFIG)
         )
 endif()
 
-install(DIRECTORY Eigen DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT ${INSTALL_COMPONENT})
+install(DIRECTORY Eigen DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel)
 
 
 option(EIGEN_BUILD_DOC "Enable creation of Eigen documentation" ON)
@@ -652,12 +649,12 @@ set (CMAKE_SIZEOF_VOID_P ${_Eigen3_CMAKE_SIZEOF_VOID_P})
 
 # The Eigen target will be located in the Eigen3 namespace. Other CMake
 # targets can refer to it using Eigen3::Eigen.
-export (TARGETS eigen NAMESPACE ${INSTALL_NAMESPACE} FILE ${targetsFile}.cmake)
+export (TARGETS eigen NAMESPACE ${CMAKE_NAMESPACE}:: FILE ${targetsFile}.cmake)
 # Export Eigen3 package to CMake registry such that it can be easily found by
 # CMake even if it has not been installed to a standard directory.
 export (PACKAGE Eigen3)
 
-install (EXPORT ${targetsFile} NAMESPACE ${INSTALL_NAMESPACE} DESTINATION ${CMAKEPACKAGE_INSTALL_DIR})
+install (EXPORT ${targetsFile} NAMESPACE ${CMAKE_NAMESPACE}:: DESTINATION ${CMAKEPACKAGE_INSTALL_DIR})
 
 install ( FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/UseEigen3.cmake
                 ${CMAKE_CURRENT_BINARY_DIR}/Eigen3Config.cmake
