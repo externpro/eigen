@@ -430,7 +430,7 @@ if(DEFINED XP_NAMESPACE)
     DESC "C++ template library for linear algebra"
     LICENSE "[MPL-2.0](http://eigen.tuxfamily.org/index.php?title=Main_Page#License 'Mozilla Public License 2.0')"
     )
-  set(CMAKEPACKAGE_INSTALL_DIR ${XP_INSTALL_CMAKEDIR})
+  set(CMAKEPACKAGE_INSTALL_DIR ${CMAKE_INSTALL_CMAKEDIR})
   set(CMAKE_NAMESPACE ${XP_NAMESPACE})
 else()
   set(CMAKE_NAMESPACE Eigen3)
