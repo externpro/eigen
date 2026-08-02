@@ -1,7 +1,6 @@
 # cmake_minimum_require must be the first command of the file
-cmake_minimum_required(VERSION 3.5.0...3.31)
+cmake_minimum_required(VERSION 3.5.0...4.3)
 
-set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES .devcontainer/cmake/xproinc.cmake)
 project(Eigen3)
 
 # guard against in-source builds
@@ -421,21 +420,6 @@ set(EIGEN_CUDA_COMPUTE_ARCH 30 CACHE STRING "The CUDA compute architecture level
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-set(targetsFile Eigen3Targets)
-if(DEFINED XP_NAMESPACE)
-  xpExternPackage(REPO_NAME eigen NAMESPACE ${XP_NAMESPACE} ALIAS_NAMESPACE Eigen3
-    TARGETS_FILE ${targetsFile} LIBRARIES Eigen
-    BASE ${EIGEN_VERSION_NUMBER} XPDIFF "patch"
-    WEB "http://eigen.tuxfamily.org" UPSTREAM "gitlab.com/libeigen/eigen.git"
-    DESC "C++ template library for linear algebra"
-    LICENSE "[MPL-2.0](http://eigen.tuxfamily.org/index.php?title=Main_Page#License 'Mozilla Public License 2.0')"
-    )
-  set(CMAKEPACKAGE_INSTALL_DIR ${CMAKE_INSTALL_CMAKEDIR})
-  set(CMAKE_NAMESPACE ${XP_NAMESPACE})
-else()
-  set(CMAKE_NAMESPACE Eigen3)
-endif()
-
 # Backward compatibility support for EIGEN_INCLUDE_INSTALL_DIR
 if(EIGEN_INCLUDE_INSTALL_DIR)
   message(WARNING "EIGEN_INCLUDE_INSTALL_DIR is deprecated. Use INCLUDE_INSTALL_DIR instead.")
@@ -626,6 +610,19 @@ target_include_directories (eigen INTERFACE
 
 # Export as title case Eigen
 set_target_properties (eigen PROPERTIES EXPORT_NAME Eigen)
+
+set(CMAKE_NAMESPACE eigen)
+set(targetsFile Eigen3Targets)
+if(COMMAND xpExternPackage)
+  xpExternPackage(REPO_NAME eigen CREATE_ALIASES ALIAS_NAMESPACE Eigen3
+    TARGETS_FILE ${targetsFile} LIBRARIES Eigen DEFAULT_TARGETS Eigen
+    BASE ${EIGEN_VERSION_NUMBER} XPDIFF "patch"
+    WEB "http://eigen.tuxfamily.org" UPSTREAM "gitlab.com/libeigen/eigen.git"
+    DESC "C++ template library for linear algebra"
+    LICENSE "[MPL-2.0](http://eigen.tuxfamily.org/index.php?title=Main_Page#License 'Mozilla Public License 2.0')"
+    )
+  set(CMAKEPACKAGE_INSTALL_DIR ${CMAKE_INSTALL_CMAKEDIR})
+endif()
 
 install (TARGETS eigen EXPORT ${targetsFile})
 
