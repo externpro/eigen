@@ -614,7 +614,7 @@ set_target_properties (eigen PROPERTIES EXPORT_NAME Eigen)
 set(CMAKE_NAMESPACE eigen)
 set(targetsFile Eigen3Targets)
 if(COMMAND xpExternPackage)
-  xpExternPackage(REPO_NAME eigen CREATE_ALIASES ALIAS_NAMESPACE Eigen3
+  xpExternPackage(REPO_NAME eigen ALIAS_NAMESPACE Eigen3
     TARGETS_FILE ${targetsFile} LIBRARIES Eigen DEFAULT_TARGETS Eigen
     BASE ${EIGEN_VERSION_NUMBER} XPDIFF "patch"
     WEB "http://eigen.tuxfamily.org" UPSTREAM "gitlab.com/libeigen/eigen.git"
